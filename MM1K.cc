@@ -14,6 +14,8 @@
 #include "QueueModule.h"
 #include "Sink.h"
 
+
+#define ALT
 //using namespace cost;
 
 component MM1K : public CostSimEng
@@ -26,24 +28,29 @@ component MM1K : public CostSimEng
 
 	public:
 		PoissonSource source;
-		PoissonSource2 altsource; 
 		QueueModule queue_module;
 		Sink sink;
+		#ifdef ALT
+			PoissonSource2 altsource; 
+		#endif
 };
 
 void MM1K :: Setup()
 {
 	
 	connect source.out,queue_module.in;
-	connect altsource.out, queue_module.in
+	connect altsource.out, queue_module.in;
 
 	connect queue_module.out,sink.in;
 	
 	source.L = 1000; // bits
-	source.bandwidth = 80E3; // bps
-
-	altsource.L = 1500; //bits
-	altsource.bandwidth = 150E3; 
+	source.bandwidth = 40E3; // bps
+	
+	#ifdef ALT
+		
+		altsource.L = 1000; //bits
+		altsource.bandwidth = 40E3; 
+	#endif
 };
 
 void MM1K:: Start()
@@ -66,7 +73,7 @@ int main(int argc, char *argv[])
  	long int seed = 2114;
 
 	az.Seed=seed;
-	az.StopTime(5000);
+	az.StopTime(1000);
 
 	az.Setup();
 
