@@ -1,0 +1,3 @@
+./COST/cxx MM1K.cc
+g++ -Wall -o MM1K MM1K.cxx
+
