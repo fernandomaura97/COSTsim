@@ -4,7 +4,8 @@
 
 #ifndef _SINK_
 #define _SINK_
-#include "packet.h"
+
+#include "packet.h"
 
 component Sink : public TypeII
 {
@@ -33,12 +34,15 @@ void Sink :: Start()
 {
 	system_time = 0;
 	received_packets = 0;
+	av_L = 0; 
 };
 
 void Sink :: Stop()
 {
 	printf("test Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+	//printf("Received traffic = %f\n",av_L/SimTime());
 	printf("Received traffic = %f\n",av_L/SimTime());
+
 };
 
 void Sink :: in(MPDU_packet &packet)
@@ -46,6 +50,8 @@ void Sink :: in(MPDU_packet &packet)
 	system_time += SimTime() - packet.send_time;
 	av_L += packet.L;
 	received_packets++;
+
+	printf("rx packets: %f, paket l: %d, av_l = %f\n", received_packets, packet.L, av_L);
 };
 
 #endif

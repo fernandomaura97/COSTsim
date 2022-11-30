@@ -8,7 +8,6 @@
 #include "./COST/cost.h"
 
 #include <deque>
-
 #include "PoissonSource.h"
 #include "PoissonSource2.h"
 #include "QueueModule.h"
@@ -36,11 +35,12 @@ component MM1K : public CostSimEng
 };
 
 void MM1K :: Setup()
-{
-	
+{	
 	connect source.out,queue_module.in;
+	//connect source[1].out, queue_module.in;
+	#ifdef ALT
 	connect altsource.out, queue_module.in;
-
+	#endif
 	connect queue_module.out,sink.in;
 	
 	source.L = 1000; // bits
