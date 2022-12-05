@@ -7,8 +7,8 @@
 #include "packet.h"
 
 
-double on_period = 0.1;
-double off_period = 0.9;
+double on_period = 0.5;
+double off_period = 0.5;
 int on_off_sources = 1;
 
 component PoissonSource_m : public TypeII
@@ -56,8 +56,8 @@ void PoissonSource_m :: Start()
 {
 	Setup();
 	//printf("hola \n" );
-	bandwidth = 20e3;
-	L = 2000;
+	bandwidth = 2e3;
+	L = 45e3;
 	fullBuffer = 0;
 	on = 1;
 	arrival_rate=bandwidth/L;

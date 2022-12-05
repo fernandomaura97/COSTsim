@@ -1323,8 +1323,8 @@ struct MPDU_packet
 
 
 
-double on_period = 0.1;
-double off_period = 0.9;
+double on_period = 0.5;
+double off_period = 0.5;
 int on_off_sources = 1;
 
 
@@ -2132,8 +2132,8 @@ void compcxx_PoissonSource_m_10 :: Start()
 {
 	Setup();
 	
-	bandwidth = 20e3;
-	L = 2000;
+	bandwidth = 2e3;
+	L = 45e3;
 	fullBuffer = 0;
 	on = 1;
 	arrival_rate=bandwidth/L;
