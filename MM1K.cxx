@@ -1336,11 +1336,11 @@ int on_off_sources = 1;
 ;
 
 
-#line 117 "PoissonSource_mod.h"
+#line 119 "PoissonSource_mod.h"
 ;
 
 
-#line 131 "PoissonSource_mod.h"
+#line 133 "PoissonSource_mod.h"
 ;
 
 #line 12 "MM1K.cc"
@@ -1467,6 +1467,128 @@ struct MPDU_packet
 #line 13 "MM1K.cc"
 
 
+#line 1 "QueueModule2.h"
+
+
+
+
+
+
+#line 1 "packet.h"
+#ifndef _MPDU_PACKET_
+#define _MPDU_PACKET_
+
+struct MPDU_packet
+{	int L; 
+	double send_time; 
+};
+
+
+#endif 
+
+
+#line 6 "QueueModule2.h"
+
+
+#line 1 "FIFO2.h"
+
+#ifndef _FIFO_QUEUE_
+#define _FIFO_QUEUE_
+
+
+
+
+#line 1 "packet.h"
+#ifndef _MPDU_PACKET_
+#define _MPDU_PACKET_
+
+struct MPDU_packet
+{	int L; 
+	double send_time; 
+};
+
+
+#endif 
+
+
+#line 7 "FIFO2.h"
+
+#include <deque>
+
+
+
+
+
+
+
+#line 34 "FIFO2.h"
+; 
+
+
+#line 39 "FIFO2.h"
+; 
+
+
+
+#line 45 "FIFO2.h"
+; 
+
+
+#line 50 "FIFO2.h"
+; 
+
+
+#line 55 "FIFO2.h"
+; 
+
+
+#line 60 "FIFO2.h"
+; 
+
+
+#line 65 "FIFO2.h"
+; 
+
+
+#line 70 "FIFO2.h"
+;
+
+
+#endif
+
+#line 7 "QueueModule2.h"
+
+ 
+
+#define Q 10
+#define C 100E3
+
+
+#line 46 "QueueModule2.h"
+;
+
+
+#line 54 "QueueModule2.h"
+;
+
+
+#line 62 "QueueModule2.h"
+;
+
+
+#line 80 "QueueModule2.h"
+;
+
+
+#line 94 "QueueModule2.h"
+;
+
+
+
+
+#line 14 "MM1K.cc"
+
+
 #line 1 "Sink.h"
 
 
@@ -1510,19 +1632,19 @@ struct MPDU_packet
 
 #endif
 
-#line 14 "MM1K.cc"
+#line 15 "MM1K.cc"
 
 
 
 
-using namespace cost;
 
 
-#line 51 "MM1K.cc"
+
+#line 50 "MM1K.cc"
 ;
 
 #include "compcxx_MM1K.h"
-class compcxx_PoissonSource_m_8;/*template <class T> */
+class compcxx_PoissonSource_m_10;/*template <class T> */
 #line 267 "./COST/cost.h"
 class compcxx_Timer_3 : public compcxx_component, public TimerBase
 {
@@ -1543,9 +1665,9 @@ class compcxx_Timer_3 : public compcxx_component, public TimerBase
  private:
   CostSimEng* m_simeng;
   event_t m_event;
-public:compcxx_PoissonSource_m_8* p_compcxx_parent;};
+public:compcxx_PoissonSource_m_10* p_compcxx_parent;};
 
-class compcxx_PoissonSource_m_8;/*template <class T> */
+class compcxx_PoissonSource_m_10;/*template <class T> */
 #line 267 "./COST/cost.h"
 class compcxx_Timer_4 : public compcxx_component, public TimerBase
 {
@@ -1566,11 +1688,11 @@ class compcxx_Timer_4 : public compcxx_component, public TimerBase
  private:
   CostSimEng* m_simeng;
   event_t m_event;
-public:compcxx_PoissonSource_m_8* p_compcxx_parent;};
+public:compcxx_PoissonSource_m_10* p_compcxx_parent;};
 
-class compcxx_QueueModule_9;
+class compcxx_QueueModule_11;
 #line 14 "PoissonSource_mod.h"
-class compcxx_PoissonSource_m_8 : public compcxx_component, public TypeII
+class compcxx_PoissonSource_m_10 : public compcxx_component, public TypeII
 {
 	public:
 		
@@ -1583,7 +1705,7 @@ class compcxx_PoissonSource_m_8 : public compcxx_component, public TypeII
 		/*inport */inline void new_packet(trigger_t& t); 
 		/*inport */inline void on_off(trigger_t& t);
 
-		compcxx_PoissonSource_m_8 () { inter_packet_timer.p_compcxx_parent=this /*connect inter_packet_timer.to_component,*/;
+		compcxx_PoissonSource_m_10 () { inter_packet_timer.p_compcxx_parent=this /*connect inter_packet_timer.to_component,*/;
 												on_off_period.p_compcxx_parent=this /*connect on_off_period.to_component, */;};
 
 	public:
@@ -1603,7 +1725,80 @@ class compcxx_PoissonSource_m_8 : public compcxx_component, public TypeII
 
 	private:
 		
-public:compcxx_QueueModule_9* p_compcxx_QueueModule_9;};
+public:compcxx_QueueModule_11* p_compcxx_QueueModule_11;};
+
+
+#line 15 "FIFO.h"
+class compcxx_FIFO_8 : public compcxx_component, public TypeII
+{	
+	private:
+		std::deque <MPDU_packet> m_queue;
+		
+	public:
+		MPDU_packet GetFirstPacket();
+		MPDU_packet GetPacketAt(int n);
+		void DelFirstPacket();		
+		void DeletePacketIn(int i);
+		void PutPacket(MPDU_packet &packet);	
+		void PutPacketFront(MPDU_packet &packet);	
+		void PutPacketIn(MPDU_packet &packet, int);	
+		int QueueSize();
+};
+
+class compcxx_QueueModule2_12;/*template <class T> */
+#line 267 "./COST/cost.h"
+class compcxx_Timer_7 : public compcxx_component, public TimerBase
+{
+ public:
+  struct event_t : public CostEvent { trigger_t data; };
+  
+
+  compcxx_Timer_7() { m_simeng = CostSimEng::Instance(); m_event.active= false; }
+  inline void Set(trigger_t const &, double );
+  inline void Set(double );
+  inline double GetTime() { return m_event.time; }
+  inline bool Active() { return m_event.active; }
+  inline trigger_t & GetData() { return m_event.data; }
+  inline void SetData(trigger_t const &d) { m_event.data = d; }
+  void Cancel();
+  /*outport void to_component(trigger_t &)*/;
+  void activate(CostEvent*);
+ private:
+  CostSimEng* m_simeng;
+  event_t m_event;
+public:compcxx_QueueModule2_12* p_compcxx_parent;};
+
+class compcxx_Sink_13;
+#line 13 "QueueModule2.h"
+class compcxx_QueueModule2_12 : public compcxx_component, public TypeII
+{
+	public:
+		
+		/*inport */void in(MPDU_packet &packet);
+		/*outport void out(MPDU_packet &packet)*/;
+
+		
+		compcxx_Timer_7 /*<trigger_t> */service_time;
+		/*inport */inline void endService(trigger_t& t);
+
+		compcxx_QueueModule2_12 () { service_time.p_compcxx_parent=this /*connect service_time.to_component,*/; }
+
+
+	private:
+		compcxx_FIFO_8 queue;
+
+	public:
+		double blocked_packets;
+		double arrived_packets;
+		double queue_length;
+
+	public:
+		void Setup();
+		void Start();
+		void Stop();
+
+
+public:compcxx_Sink_13* p_compcxx_Sink_13;};
 
 
 #line 15 "FIFO.h"
@@ -1623,7 +1818,7 @@ class compcxx_FIFO_6 : public compcxx_component, public TypeII
 		int QueueSize();
 };
 
-class compcxx_QueueModule_10;/*template <class T> */
+class compcxx_QueueModule_11;/*template <class T> */
 #line 267 "./COST/cost.h"
 class compcxx_Timer_5 : public compcxx_component, public TimerBase
 {
@@ -1644,11 +1839,11 @@ class compcxx_Timer_5 : public compcxx_component, public TimerBase
  private:
   CostSimEng* m_simeng;
   event_t m_event;
-public:compcxx_QueueModule_10* p_compcxx_parent;};
+public:compcxx_QueueModule_11* p_compcxx_parent;};
 
-class compcxx_Sink_11;
+class compcxx_Sink_14;class compcxx_QueueModule2_12;
 #line 12 "QueueModule.h"
-class compcxx_QueueModule_10 : public compcxx_component, public TypeII
+class compcxx_QueueModule_11 : public compcxx_component, public TypeII
 {
 	public:
 		
@@ -1659,7 +1854,7 @@ class compcxx_QueueModule_10 : public compcxx_component, public TypeII
 		compcxx_Timer_5 /*<trigger_t> */service_time;
 		/*inport */inline void endService(trigger_t& t);
 
-		compcxx_QueueModule_10 () { service_time.p_compcxx_parent=this /*connect service_time.to_component,*/; }
+		compcxx_QueueModule_11 () { service_time.p_compcxx_parent=this /*connect service_time.to_component,*/; }
 
 
 	private:
@@ -1676,84 +1871,11 @@ class compcxx_QueueModule_10 : public compcxx_component, public TypeII
 		void Stop();
 
 
-public:compcxx_Sink_11* p_compcxx_Sink_11;};
-
-
-#line 15 "FIFO.h"
-class compcxx_FIFO_6 : public compcxx_component, public TypeII
-{	
-	private:
-		std::deque <MPDU_packet> m_queue;
-		
-	public:
-		MPDU_packet GetFirstPacket();
-		MPDU_packet GetPacketAt(int n);
-		void DelFirstPacket();		
-		void DeletePacketIn(int i);
-		void PutPacket(MPDU_packet &packet);	
-		void PutPacketFront(MPDU_packet &packet);	
-		void PutPacketIn(MPDU_packet &packet, int);	
-		int QueueSize();
-};
-
-class compcxx_QueueModule_9;/*template <class T> */
-#line 267 "./COST/cost.h"
-class compcxx_Timer_5 : public compcxx_component, public TimerBase
-{
- public:
-  struct event_t : public CostEvent { trigger_t data; };
-  
-
-  compcxx_Timer_5() { m_simeng = CostSimEng::Instance(); m_event.active= false; }
-  inline void Set(trigger_t const &, double );
-  inline void Set(double );
-  inline double GetTime() { return m_event.time; }
-  inline bool Active() { return m_event.active; }
-  inline trigger_t & GetData() { return m_event.data; }
-  inline void SetData(trigger_t const &d) { m_event.data = d; }
-  void Cancel();
-  /*outport void to_component(trigger_t &)*/;
-  void activate(CostEvent*);
- private:
-  CostSimEng* m_simeng;
-  event_t m_event;
-public:compcxx_QueueModule_9* p_compcxx_parent;};
-
-class compcxx_Sink_12;class compcxx_QueueModule_10;
-#line 12 "QueueModule.h"
-class compcxx_QueueModule_9 : public compcxx_component, public TypeII
-{
-	public:
-		
-		/*inport */void in(MPDU_packet &packet);
-		/*outport void out(MPDU_packet &packet)*/;
-
-		
-		compcxx_Timer_5 /*<trigger_t> */service_time;
-		/*inport */inline void endService(trigger_t& t);
-
-		compcxx_QueueModule_9 () { service_time.p_compcxx_parent=this /*connect service_time.to_component,*/; }
-
-
-	private:
-		compcxx_FIFO_6 queue;
-
-	public:
-		double blocked_packets;
-		double arrived_packets;
-		double queue_length;
-
-	public:
-		void Setup();
-		void Start();
-		void Stop();
-
-
-public:compcxx_Sink_12* p_compcxx_Sink_12;public:compcxx_QueueModule_10* p_compcxx_QueueModule_10;};
+public:compcxx_Sink_14* p_compcxx_Sink_14;public:compcxx_QueueModule2_12* p_compcxx_QueueModule2_12;};
 
 
 #line 10 "Sink.h"
-class compcxx_Sink_12 : public compcxx_component, public TypeII
+class compcxx_Sink_14 : public compcxx_component, public TypeII
 {
 	public:
 		
@@ -1773,7 +1895,7 @@ class compcxx_Sink_12 : public compcxx_component, public TypeII
 
 
 #line 10 "Sink.h"
-class compcxx_Sink_11 : public compcxx_component, public TypeII
+class compcxx_Sink_13 : public compcxx_component, public TypeII
 {
 	public:
 		
@@ -1791,7 +1913,7 @@ class compcxx_Sink_11 : public compcxx_component, public TypeII
 
 };
 
-class compcxx_PoissonSource_7;/*template <class T> */
+class compcxx_PoissonSource_9;/*template <class T> */
 #line 267 "./COST/cost.h"
 class compcxx_Timer_2 : public compcxx_component, public TimerBase
 {
@@ -1812,11 +1934,11 @@ class compcxx_Timer_2 : public compcxx_component, public TimerBase
  private:
   CostSimEng* m_simeng;
   event_t m_event;
-public:compcxx_PoissonSource_7* p_compcxx_parent;};
+public:compcxx_PoissonSource_9* p_compcxx_parent;};
 
-class compcxx_QueueModule_9;
+class compcxx_QueueModule_11;
 #line 9 "PoissonSource.h"
-class compcxx_PoissonSource_7 : public compcxx_component, public TypeII
+class compcxx_PoissonSource_9 : public compcxx_component, public TypeII
 {
 	public:
 		
@@ -1826,7 +1948,7 @@ class compcxx_PoissonSource_7 : public compcxx_component, public TypeII
 		compcxx_Timer_2 /*<trigger_t> */inter_packet_timer;
 		/*inport */inline void new_packet(trigger_t& t); 
 
-		compcxx_PoissonSource_7 () { inter_packet_timer.p_compcxx_parent=this /*connect inter_packet_timer.to_component,*/; }
+		compcxx_PoissonSource_9 () { inter_packet_timer.p_compcxx_parent=this /*connect inter_packet_timer.to_component,*/; }
 
 	public:
 		double bandwidth; 
@@ -1841,11 +1963,11 @@ class compcxx_PoissonSource_7 : public compcxx_component, public TypeII
 			
 	private:
 		
-public:compcxx_QueueModule_9* p_compcxx_QueueModule_9;};
+public:compcxx_QueueModule_11* p_compcxx_QueueModule_11;};
 
 
-#line 20 "MM1K.cc"
-class compcxx_MM1K_13 : public compcxx_component, public CostSimEng
+#line 21 "MM1K.cc"
+class compcxx_MM1K_15 : public compcxx_component, public CostSimEng
 {
 	public:
 		void Setup();
@@ -1854,13 +1976,13 @@ class compcxx_MM1K_13 : public compcxx_component, public CostSimEng
 		
 
 	public:
-		compcxx_PoissonSource_7 source;
-		compcxx_PoissonSource_m_8 onof;
-		compcxx_QueueModule_9 queue_module;
-		compcxx_QueueModule_10 queue_back; 
+		compcxx_PoissonSource_9 source;
+		compcxx_PoissonSource_m_10 onof;
+		compcxx_QueueModule_11 queue_module;
+		compcxx_QueueModule2_12 queue_back; 
 
-		compcxx_Sink_11 sink_end; 
-		compcxx_Sink_12 sink;
+		compcxx_Sink_13 sink_end; 
+		compcxx_Sink_14 sink;
 };
 
 
@@ -1983,13 +2105,13 @@ class compcxx_MM1K_13 : public compcxx_component, public CostSimEng
 #line 25 "PoissonSource_mod.h"
 
 #line 49 "PoissonSource_mod.h"
-void compcxx_PoissonSource_m_8 :: Setup()
+void compcxx_PoissonSource_m_10 :: Setup()
 {
 	printf("hello setup\n");
 	
 }
 #line 55 "PoissonSource_mod.h"
-void compcxx_PoissonSource_m_8 :: Start()
+void compcxx_PoissonSource_m_10 :: Start()
 {
 	Setup();
 	
@@ -2014,30 +2136,32 @@ void compcxx_PoissonSource_m_8 :: Start()
 	}
 }
 #line 80 "PoissonSource_mod.h"
-void compcxx_PoissonSource_m_8 :: Stop()
+void compcxx_PoissonSource_m_10 :: Stop()
 {
 	printf("Sent packets from generator = %f\n",sent_packets);
 
 }
 #line 86 "PoissonSource_mod.h"
-void compcxx_PoissonSource_m_8 :: new_packet(trigger_t &)
+void compcxx_PoissonSource_m_10 :: new_packet(trigger_t &)
 {
 for(int i=0;i<=0;i++){
 	MPDU_packet packet;
 
 	packet.L=L;
 	packet.send_time = SimTime();
-	packet.tx_attempts = 0;
-	packet.id = packet_id;
-	packet.transmitting = 0;
-	packet.tx_time = -1;
-	packet.tx_time_final = -1;
-	packet.assignedInterface = -1;
-	packet.interruptions = 0;
-	packet.assignedBO = -1;
-	packet.time_of_backoff_assignment = -1;
 	
-	(p_compcxx_QueueModule_9->in(packet));
+
+
+
+
+
+
+
+
+
+
+	
+	(p_compcxx_QueueModule_11->in(packet));
 	packet_id++;
 
 	counter++;
@@ -2052,8 +2176,8 @@ for(int i=0;i<=0;i++){
 	
 
 }
-#line 119 "PoissonSource_mod.h"
-void compcxx_PoissonSource_m_8 :: on_off(trigger_t &){
+#line 121 "PoissonSource_mod.h"
+void compcxx_PoissonSource_m_10 :: on_off(trigger_t &){
 	if(on == 1){
 		on = 0;
 		inter_packet_timer.Cancel();
@@ -2067,42 +2191,42 @@ void compcxx_PoissonSource_m_8 :: on_off(trigger_t &){
 	}
 }
 #line 31 "FIFO.h"
-MPDU_packet compcxx_FIFO_6 :: GetFirstPacket()
+MPDU_packet compcxx_FIFO_8 :: GetFirstPacket()
 {
 	return(m_queue.front());	
 }
 #line 36 "FIFO.h"
-MPDU_packet compcxx_FIFO_6 :: GetPacketAt(int n)
+MPDU_packet compcxx_FIFO_8 :: GetPacketAt(int n)
 {
 	return(m_queue.at(n));	
 }
 #line 42 "FIFO.h"
-void compcxx_FIFO_6 :: DelFirstPacket()
+void compcxx_FIFO_8 :: DelFirstPacket()
 {
 	m_queue.pop_front();
 }
 #line 47 "FIFO.h"
-void compcxx_FIFO_6 :: PutPacket(MPDU_packet &packet)
+void compcxx_FIFO_8 :: PutPacket(MPDU_packet &packet)
 {	
 	m_queue.push_back(packet);
 }
 #line 52 "FIFO.h"
-void compcxx_FIFO_6 :: PutPacketFront(MPDU_packet &packet)
+void compcxx_FIFO_8 :: PutPacketFront(MPDU_packet &packet)
 {	
 	m_queue.push_front(packet);
 }
 #line 57 "FIFO.h"
-int compcxx_FIFO_6 :: QueueSize()
+int compcxx_FIFO_8 :: QueueSize()
 {
 	return(m_queue.size());
 }
 #line 62 "FIFO.h"
-void compcxx_FIFO_6 :: PutPacketIn(MPDU_packet & packet,int i)
+void compcxx_FIFO_8 :: PutPacketIn(MPDU_packet & packet,int i)
 {
 	m_queue.insert(m_queue.begin()+i,packet);
 }
 #line 67 "FIFO.h"
-void compcxx_FIFO_6 :: DeletePacketIn(int i)
+void compcxx_FIFO_8 :: DeletePacketIn(int i)
 {
 	m_queue.erase(m_queue.begin()+i);
 }
@@ -2110,7 +2234,7 @@ void compcxx_FIFO_6 :: DeletePacketIn(int i)
 
 #line 288 "./COST/cost.h"
 /*template <class T>
-*/void compcxx_Timer_5/*<trigger_t >*/::Set(trigger_t const & data, double time)
+*/void compcxx_Timer_7/*<trigger_t >*/::Set(trigger_t const & data, double time)
 {
   if(m_event.active)
     m_simeng->CancelEvent(&m_event);
@@ -2126,7 +2250,7 @@ void compcxx_FIFO_6 :: DeletePacketIn(int i)
 
 #line 300 "./COST/cost.h"
 /*template <class T>
-*/void compcxx_Timer_5/*<trigger_t >*/::Set(double time)
+*/void compcxx_Timer_7/*<trigger_t >*/::Set(double time)
 {
   if(m_event.active)
     m_simeng->CancelEvent(&m_event);
@@ -2141,7 +2265,7 @@ void compcxx_FIFO_6 :: DeletePacketIn(int i)
 
 #line 311 "./COST/cost.h"
 /*template <class T>
-*/void compcxx_Timer_5/*<trigger_t >*/::Cancel()
+*/void compcxx_Timer_7/*<trigger_t >*/::Cancel()
 {
   if(m_event.active)
     m_simeng->CancelEvent(&m_event);
@@ -2153,7 +2277,7 @@ void compcxx_FIFO_6 :: DeletePacketIn(int i)
 
 #line 319 "./COST/cost.h"
 /*template <class T>
-*/void compcxx_Timer_5/*<trigger_t >*/::activate(CostEvent*e)
+*/void compcxx_Timer_7/*<trigger_t >*/::activate(CostEvent*e)
 {
   assert(e==&m_event);
   m_event.active=false;
@@ -2163,31 +2287,31 @@ void compcxx_FIFO_6 :: DeletePacketIn(int i)
 
 
 
-#line 21 "QueueModule.h"
+#line 22 "QueueModule2.h"
 
-#line 42 "QueueModule.h"
-void compcxx_QueueModule_10 :: Setup()
+#line 43 "QueueModule2.h"
+void compcxx_QueueModule2_12 :: Setup()
 {
 
 }
-#line 47 "QueueModule.h"
-void compcxx_QueueModule_10 :: Start()
+#line 48 "QueueModule2.h"
+void compcxx_QueueModule2_12 :: Start()
 {
 	
 	blocked_packets = 0;
 	arrived_packets = 0;
 	queue_length = 0;
 }
-#line 55 "QueueModule.h"
-void compcxx_QueueModule_10 :: Stop()
+#line 56 "QueueModule2.h"
+void compcxx_QueueModule2_12 :: Stop()
 {
 	
 
 	printf("test Blocking Probability = %f\n",blocked_packets/arrived_packets);
 	printf("test E[Queue Length] = %f\n",queue_length/arrived_packets);
 }
-#line 63 "QueueModule.h"
-void compcxx_QueueModule_10 :: in(MPDU_packet &packet)
+#line 64 "QueueModule2.h"
+void compcxx_QueueModule2_12 :: in(MPDU_packet &packet)
 {
 	arrived_packets++;
 	queue_length += queue.QueueSize();
@@ -2204,12 +2328,12 @@ void compcxx_QueueModule_10 :: in(MPDU_packet &packet)
 
 
 }
-#line 81 "QueueModule.h"
-void compcxx_QueueModule_10 :: endService(trigger_t &)
+#line 82 "QueueModule2.h"
+void compcxx_QueueModule2_12 :: endService(trigger_t &)
 {
 	MPDU_packet packet = queue.GetFirstPacket();
 	queue.DelFirstPacket();
-	(p_compcxx_Sink_11->in(packet));
+	(p_compcxx_Sink_13->in(packet));
 
 	if(queue.QueueSize() > 0)
 	{
@@ -2318,12 +2442,12 @@ void compcxx_FIFO_6 :: DeletePacketIn(int i)
 #line 21 "QueueModule.h"
 
 #line 42 "QueueModule.h"
-void compcxx_QueueModule_9 :: Setup()
+void compcxx_QueueModule_11 :: Setup()
 {
 
 }
 #line 47 "QueueModule.h"
-void compcxx_QueueModule_9 :: Start()
+void compcxx_QueueModule_11 :: Start()
 {
 	
 	blocked_packets = 0;
@@ -2331,7 +2455,7 @@ void compcxx_QueueModule_9 :: Start()
 	queue_length = 0;
 }
 #line 55 "QueueModule.h"
-void compcxx_QueueModule_9 :: Stop()
+void compcxx_QueueModule_11 :: Stop()
 {
 	
 
@@ -2339,7 +2463,7 @@ void compcxx_QueueModule_9 :: Stop()
 	printf("test E[Queue Length] = %f\n",queue_length/arrived_packets);
 }
 #line 63 "QueueModule.h"
-void compcxx_QueueModule_9 :: in(MPDU_packet &packet)
+void compcxx_QueueModule_11 :: in(MPDU_packet &packet)
 {
 	arrived_packets++;
 	queue_length += queue.QueueSize();
@@ -2357,11 +2481,11 @@ void compcxx_QueueModule_9 :: in(MPDU_packet &packet)
 
 }
 #line 81 "QueueModule.h"
-void compcxx_QueueModule_9 :: endService(trigger_t &)
+void compcxx_QueueModule_11 :: endService(trigger_t &)
 {
 	MPDU_packet packet = queue.GetFirstPacket();
 	queue.DelFirstPacket();
-	(p_compcxx_Sink_12->in(packet),p_compcxx_QueueModule_10->in(packet));
+	(p_compcxx_Sink_14->in(packet),p_compcxx_QueueModule2_12->in(packet));
 
 	if(queue.QueueSize() > 0)
 	{
@@ -2371,19 +2495,19 @@ void compcxx_QueueModule_9 :: endService(trigger_t &)
 
 }
 #line 28 "Sink.h"
-void compcxx_Sink_12 :: Setup()
+void compcxx_Sink_14 :: Setup()
 {
 
 }
 #line 33 "Sink.h"
-void compcxx_Sink_12 :: Start()
+void compcxx_Sink_14 :: Start()
 {
 	system_time = 0;
 	received_packets = 0;
 	av_L = 0; 
 }
 #line 40 "Sink.h"
-void compcxx_Sink_12 :: Stop()
+void compcxx_Sink_14 :: Stop()
 {
 	printf("test Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
 	
@@ -2391,7 +2515,7 @@ void compcxx_Sink_12 :: Stop()
 
 }
 #line 48 "Sink.h"
-void compcxx_Sink_12 :: in(MPDU_packet &packet)
+void compcxx_Sink_14 :: in(MPDU_packet &packet)
 {
 	system_time += SimTime() - packet.send_time;
 	av_L += packet.L;
@@ -2400,19 +2524,19 @@ void compcxx_Sink_12 :: in(MPDU_packet &packet)
 	printf("rx packets: %f, paket l: %d, av_l = %f\n", received_packets, packet.L, av_L);
 }
 #line 28 "Sink.h"
-void compcxx_Sink_11 :: Setup()
+void compcxx_Sink_13 :: Setup()
 {
 
 }
 #line 33 "Sink.h"
-void compcxx_Sink_11 :: Start()
+void compcxx_Sink_13 :: Start()
 {
 	system_time = 0;
 	received_packets = 0;
 	av_L = 0; 
 }
 #line 40 "Sink.h"
-void compcxx_Sink_11 :: Stop()
+void compcxx_Sink_13 :: Stop()
 {
 	printf("test Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
 	
@@ -2420,7 +2544,7 @@ void compcxx_Sink_11 :: Stop()
 
 }
 #line 48 "Sink.h"
-void compcxx_Sink_11 :: in(MPDU_packet &packet)
+void compcxx_Sink_13 :: in(MPDU_packet &packet)
 {
 	system_time += SimTime() - packet.send_time;
 	av_L += packet.L;
@@ -2488,24 +2612,24 @@ void compcxx_Sink_11 :: in(MPDU_packet &packet)
 #line 17 "PoissonSource.h"
 
 #line 36 "PoissonSource.h"
-void compcxx_PoissonSource_7 :: Setup()
+void compcxx_PoissonSource_9 :: Setup()
 {
 
 }
 #line 41 "PoissonSource.h"
-void compcxx_PoissonSource_7 :: Start()
+void compcxx_PoissonSource_9 :: Start()
 {
 	arrival_rate=bandwidth/L;
 
 	inter_packet_timer.Set(Exponential(1/arrival_rate));
 }
 #line 48 "PoissonSource.h"
-void compcxx_PoissonSource_7 :: Stop()
+void compcxx_PoissonSource_9 :: Stop()
 {
 
 }
 #line 53 "PoissonSource.h"
-void compcxx_PoissonSource_7 :: new_packet(trigger_t &)
+void compcxx_PoissonSource_9 :: new_packet(trigger_t &)
 {
 	MPDU_packet packet;
 
@@ -2513,35 +2637,33 @@ void compcxx_PoissonSource_7 :: new_packet(trigger_t &)
 	
 	packet.send_time = SimTime();
 
-	(p_compcxx_QueueModule_9->in(packet));
+	(p_compcxx_QueueModule_11->in(packet));
 	
 	inter_packet_timer.Set(SimTime()+Exponential(1/arrival_rate));	
 
 }
-#line 38 "MM1K.cc"
-void compcxx_MM1K_13 :: Setup()
+#line 39 "MM1K.cc"
+void compcxx_MM1K_15 :: Setup()
 {	
-	source.p_compcxx_QueueModule_9=&queue_module /*connect source.out,queue_module.in*/;
-	onof.p_compcxx_QueueModule_9=&queue_module /*connect onof.out, queue_module.in*/; 
+	source.p_compcxx_QueueModule_11=&queue_module /*connect source.out,queue_module.in*/;
+	onof.p_compcxx_QueueModule_11=&queue_module /*connect onof.out, queue_module.in*/; 
 
-	queue_module.p_compcxx_Sink_12=&sink /*connect queue_module.out,sink.in*/;
-
-
-	queue_module.p_compcxx_QueueModule_10=&queue_back /*connect queue_module.out, queue_back.in*/; 
-	queue_back.p_compcxx_Sink_11=&sink_end /*connect queue_back.out, sink_end.in*/; 
+	queue_module.p_compcxx_Sink_14=&sink /*connect queue_module.out,sink.in*/;
+	queue_module.p_compcxx_QueueModule2_12=&queue_back /*connect queue_module.out, queue_back.in*/; 
+	queue_back.p_compcxx_Sink_13=&sink_end /*connect queue_back.out, sink_end.in*/; 
 
 	source.L = 1000; 
 	source.bandwidth = 40E3; 
 }
-#line 53 "MM1K.cc"
-void compcxx_MM1K_13:: Start()
+#line 52 "MM1K.cc"
+void compcxx_MM1K_15:: Start()
 {
 	
 }
 
 
-#line 58 "MM1K.cc"
-void compcxx_MM1K_13:: Stop()
+#line 57 "MM1K.cc"
+void compcxx_MM1K_15:: Stop()
 {
 
 }
@@ -2549,11 +2671,11 @@ void compcxx_MM1K_13:: Stop()
 
 
 
-#line 65 "MM1K.cc"
+#line 64 "MM1K.cc"
 int main(int argc, char *argv[])
 {
 
-	compcxx_MM1K_13 az;
+	compcxx_MM1K_15 az;;
 
  	long int seed = 2114;
 

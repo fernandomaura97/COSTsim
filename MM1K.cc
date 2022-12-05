@@ -11,8 +11,8 @@
 #include "PoissonSource.h"
 #include "PoissonSource_mod.h"
 #include "QueueModule.h"
+#include "QueueModule2.h"
 #include "Sink.h"
-
 
 
 //using namespace cost;
@@ -29,7 +29,7 @@ component MM1K : public CostSimEng
 		PoissonSource source;
 		PoissonSource_m onof;
 		QueueModule queue_module;
-		QueueModule queue_back; 
+		QueueModule2 queue_back; 
 
 		Sink sink_end; 
 		Sink sink;
@@ -37,12 +37,13 @@ component MM1K : public CostSimEng
 
 void MM1K :: Setup()
 {	
+
+	
+
 	connect source.out,queue_module.in;
 	connect onof.out, queue_module.in; 
 
 	connect queue_module.out,sink.in;
-
-
 	connect queue_module.out, queue_back.in; //instead of passing from sink, we straight connect queue_ to queue_back in opposite direction  
 	connect queue_back.out, sink_end.in; 
 
@@ -65,7 +66,7 @@ void MM1K:: Stop()
 int main(int argc, char *argv[])
 {
 
-	MM1K az;
+	MM1K az;;
 
  	long int seed = 2114;
 

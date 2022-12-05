@@ -90,6 +90,7 @@ for(int i=0;i<=0;i++){
 
 	packet.L=L;
 	packet.send_time = SimTime();
+	/*
 	packet.tx_attempts = 0;
 	packet.id = packet_id;
 	packet.transmitting = 0;
@@ -99,6 +100,7 @@ for(int i=0;i<=0;i++){
 	packet.interruptions = 0;
 	packet.assignedBO = -1;
 	packet.time_of_backoff_assignment = -1;
+	*/
 	//printf("%f: SOURCE %d creates packet: %d \n",SimTime(),id, packet.id);
 	out(packet);
 	packet_id++;
