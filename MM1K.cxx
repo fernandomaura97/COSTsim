@@ -1261,8 +1261,10 @@ void CostSimEng::Run()
 #define _MPDU_PACKET_
 
 struct MPDU_packet
-{	int L; 
+{
+	int L; 
 	double send_time; 
+	bool wayback;
 };
 
 
@@ -1307,8 +1309,10 @@ struct MPDU_packet
 #define _MPDU_PACKET_
 
 struct MPDU_packet
-{	int L; 
+{
+	int L; 
 	double send_time; 
+	bool wayback;
 };
 
 
@@ -1358,8 +1362,10 @@ int on_off_sources = 1;
 #define _MPDU_PACKET_
 
 struct MPDU_packet
-{	int L; 
+{
+	int L; 
 	double send_time; 
+	bool wayback;
 };
 
 
@@ -1382,8 +1388,10 @@ struct MPDU_packet
 #define _MPDU_PACKET_
 
 struct MPDU_packet
-{	int L; 
+{
+	int L; 
 	double send_time; 
+	bool wayback;
 };
 
 
@@ -1450,15 +1458,15 @@ struct MPDU_packet
 ;
 
 
-#line 61 "QueueModule.h"
+#line 62 "QueueModule.h"
 ;
 
 
-#line 79 "QueueModule.h"
+#line 80 "QueueModule.h"
 ;
 
 
-#line 93 "QueueModule.h"
+#line 94 "QueueModule.h"
 ;
 
 
@@ -1479,8 +1487,10 @@ struct MPDU_packet
 #define _MPDU_PACKET_
 
 struct MPDU_packet
-{	int L; 
+{
+	int L; 
 	double send_time; 
+	bool wayback;
 };
 
 
@@ -1503,8 +1513,10 @@ struct MPDU_packet
 #define _MPDU_PACKET_
 
 struct MPDU_packet
-{	int L; 
+{
+	int L; 
 	double send_time; 
+	bool wayback;
 };
 
 
@@ -1603,8 +1615,10 @@ struct MPDU_packet
 #define _MPDU_PACKET_
 
 struct MPDU_packet
-{	int L; 
+{
+	int L; 
 	double send_time; 
+	bool wayback;
 };
 
 
@@ -1615,19 +1629,19 @@ struct MPDU_packet
 
 
 
-#line 31 "Sink.h"
+#line 33 "Sink.h"
 ;
 
 
-#line 38 "Sink.h"
+#line 40 "Sink.h"
 ;
 
 
-#line 46 "Sink.h"
+#line 54 "Sink.h"
 ;
 
 
-#line 55 "Sink.h"
+#line 63 "Sink.h"
 ;
 
 #endif
@@ -1639,8 +1653,7 @@ struct MPDU_packet
 
 
 
-
-#line 50 "MM1K.cc"
+#line 56 "MM1K.cc"
 ;
 
 #include "compcxx_MM1K.h"
@@ -1885,11 +1898,13 @@ class compcxx_Sink_14 : public compcxx_component, public TypeII
 		void Setup();
 		void Start();
 		void Stop();
+		
 
 	public:
 		double system_time;
 		double received_packets;
 		double av_L; 
+		bool is_lastsink;
 
 };
 
@@ -1905,11 +1920,13 @@ class compcxx_Sink_13 : public compcxx_component, public TypeII
 		void Setup();
 		void Start();
 		void Stop();
+		
 
 	public:
 		double system_time;
 		double received_packets;
 		double av_L; 
+		bool is_lastsink;
 
 };
 
@@ -1966,7 +1983,7 @@ class compcxx_PoissonSource_9 : public compcxx_component, public TypeII
 public:compcxx_QueueModule_11* p_compcxx_QueueModule_11;};
 
 
-#line 21 "MM1K.cc"
+#line 20 "MM1K.cc"
 class compcxx_MM1K_15 : public compcxx_component, public CostSimEng
 {
 	public:
@@ -2115,8 +2132,8 @@ void compcxx_PoissonSource_m_10 :: Start()
 {
 	Setup();
 	
-	bandwidth = 2e9;
-	L = 12000;
+	bandwidth = 20e3;
+	L = 2000;
 	fullBuffer = 0;
 	on = 1;
 	arrival_rate=bandwidth/L;
@@ -2306,9 +2323,9 @@ void compcxx_QueueModule2_12 :: Start()
 void compcxx_QueueModule2_12 :: Stop()
 {
 	
-
-	printf("test Blocking Probability = %f\n",blocked_packets/arrived_packets);
-	printf("test E[Queue Length] = %f\n",queue_length/arrived_packets);
+	printf("WAY BACK:\n");
+	printf("\t Blocking Probability = %f\n",blocked_packets/arrived_packets);
+	printf("\t E[Queue Length] = %f\n",queue_length/arrived_packets);
 }
 #line 64 "QueueModule2.h"
 void compcxx_QueueModule2_12 :: in(MPDU_packet &packet)
@@ -2458,11 +2475,12 @@ void compcxx_QueueModule_11 :: Start()
 void compcxx_QueueModule_11 :: Stop()
 {
 	
-
-	printf("test Blocking Probability = %f\n",blocked_packets/arrived_packets);
-	printf("test E[Queue Length] = %f\n",queue_length/arrived_packets);
+	printf("WAY IN:\n");
+	printf("\ttest Blocking Probability = %f\n",blocked_packets/arrived_packets);
+	printf("\ttest E[Queue Length] = %f\n",queue_length/arrived_packets);
+	
 }
-#line 63 "QueueModule.h"
+#line 64 "QueueModule.h"
 void compcxx_QueueModule_11 :: in(MPDU_packet &packet)
 {
 	arrived_packets++;
@@ -2480,7 +2498,7 @@ void compcxx_QueueModule_11 :: in(MPDU_packet &packet)
 
 
 }
-#line 81 "QueueModule.h"
+#line 82 "QueueModule.h"
 void compcxx_QueueModule_11 :: endService(trigger_t &)
 {
 	MPDU_packet packet = queue.GetFirstPacket();
@@ -2494,27 +2512,33 @@ void compcxx_QueueModule_11 :: endService(trigger_t &)
 	}
 
 }
-#line 28 "Sink.h"
+#line 30 "Sink.h"
 void compcxx_Sink_14 :: Setup()
 {
 
 }
-#line 33 "Sink.h"
+#line 35 "Sink.h"
 void compcxx_Sink_14 :: Start()
 {
 	system_time = 0;
 	received_packets = 0;
 	av_L = 0; 
 }
-#line 40 "Sink.h"
+#line 42 "Sink.h"
 void compcxx_Sink_14 :: Stop()
 {
-	printf("test Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
-	
-	printf("Received traffic = %f\n",av_L/SimTime());
-
+	if (is_lastsink == false){
+		printf("STATS 1st SINK :\n");
+		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+		printf("\tReceived traffic = %f\n",av_L/SimTime());
+		}
+	else{
+		printf("STATS last SINK:\n");
+		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+		printf("\tReceived traffic = %f\n",av_L/SimTime());
+		}
 }
-#line 48 "Sink.h"
+#line 56 "Sink.h"
 void compcxx_Sink_14 :: in(MPDU_packet &packet)
 {
 	system_time += SimTime() - packet.send_time;
@@ -2523,27 +2547,33 @@ void compcxx_Sink_14 :: in(MPDU_packet &packet)
 
 	printf("rx packets: %f, paket l: %d, av_l = %f\n", received_packets, packet.L, av_L);
 }
-#line 28 "Sink.h"
+#line 30 "Sink.h"
 void compcxx_Sink_13 :: Setup()
 {
 
 }
-#line 33 "Sink.h"
+#line 35 "Sink.h"
 void compcxx_Sink_13 :: Start()
 {
 	system_time = 0;
 	received_packets = 0;
 	av_L = 0; 
 }
-#line 40 "Sink.h"
+#line 42 "Sink.h"
 void compcxx_Sink_13 :: Stop()
 {
-	printf("test Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
-	
-	printf("Received traffic = %f\n",av_L/SimTime());
-
+	if (is_lastsink == false){
+		printf("STATS 1st SINK :\n");
+		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+		printf("\tReceived traffic = %f\n",av_L/SimTime());
+		}
+	else{
+		printf("STATS last SINK:\n");
+		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+		printf("\tReceived traffic = %f\n",av_L/SimTime());
+		}
 }
-#line 48 "Sink.h"
+#line 56 "Sink.h"
 void compcxx_Sink_13 :: in(MPDU_packet &packet)
 {
 	system_time += SimTime() - packet.send_time;
@@ -2642,9 +2672,12 @@ void compcxx_PoissonSource_9 :: new_packet(trigger_t &)
 	inter_packet_timer.Set(SimTime()+Exponential(1/arrival_rate));	
 
 }
-#line 39 "MM1K.cc"
+#line 38 "MM1K.cc"
 void compcxx_MM1K_15 :: Setup()
 {	
+
+	
+
 	source.p_compcxx_QueueModule_11=&queue_module /*connect source.out,queue_module.in*/;
 	onof.p_compcxx_QueueModule_11=&queue_module /*connect onof.out, queue_module.in*/; 
 
@@ -2654,15 +2687,19 @@ void compcxx_MM1K_15 :: Setup()
 
 	source.L = 1000; 
 	source.bandwidth = 40E3; 
+
+	sink.is_lastsink = false; 
+	sink_end.is_lastsink = true; 
+
 }
-#line 52 "MM1K.cc"
+#line 58 "MM1K.cc"
 void compcxx_MM1K_15:: Start()
 {
 	
 }
 
 
-#line 57 "MM1K.cc"
+#line 63 "MM1K.cc"
 void compcxx_MM1K_15:: Stop()
 {
 
@@ -2671,7 +2708,7 @@ void compcxx_MM1K_15:: Stop()
 
 
 
-#line 64 "MM1K.cc"
+#line 70 "MM1K.cc"
 int main(int argc, char *argv[])
 {
 

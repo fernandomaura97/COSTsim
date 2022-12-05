@@ -49,6 +49,10 @@ void MM1K :: Setup()
 
 	source.L = 1000; // bits
 	source.bandwidth = 40E3; // bps
+
+	sink.is_lastsink = false; 
+	sink_end.is_lastsink = true; 
+
 };
 
 void MM1K:: Start()

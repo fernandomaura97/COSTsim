@@ -17,11 +17,13 @@ component Sink : public TypeII
 		void Setup();
 		void Start();
 		void Stop();
+		
 
 	public:
 		double system_time;
 		double received_packets;
 		double av_L; // average packet length
+		bool is_lastsink;
 
 };
 
@@ -39,10 +41,16 @@ void Sink :: Start()
 
 void Sink :: Stop()
 {
-	printf("test Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
-	//printf("Received traffic = %f\n",av_L/SimTime());
-	printf("Received traffic = %f\n",av_L/SimTime());
-
+	if (is_lastsink == false){
+		printf("STATS 1st SINK :\n");
+		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+		printf("\tReceived traffic = %f\n",av_L/SimTime());
+		}
+	else{
+		printf("STATS last SINK:\n");
+		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+		printf("\tReceived traffic = %f\n",av_L/SimTime());
+		}
 };
 
 void Sink :: in(MPDU_packet &packet)

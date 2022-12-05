@@ -56,8 +56,8 @@ void PoissonSource_m :: Start()
 {
 	Setup();
 	//printf("hola \n" );
-	bandwidth = 2e9;
-	L = 12000;
+	bandwidth = 20e3;
+	L = 2000;
 	fullBuffer = 0;
 	on = 1;
 	arrival_rate=bandwidth/L;
