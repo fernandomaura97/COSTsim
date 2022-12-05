@@ -9,12 +9,12 @@
 
 #include <deque>
 #include "PoissonSource.h"
-#include "PoissonSource2.h"
+#include "PoissonSource_mod.h"
 #include "QueueModule.h"
 #include "Sink.h"
 
 
-#define ALT
+
 //using namespace cost;
 
 component MM1K : public CostSimEng
@@ -27,30 +27,27 @@ component MM1K : public CostSimEng
 
 	public:
 		PoissonSource source;
+		PoissonSource_m onof;
 		QueueModule queue_module;
+		QueueModule queue_back; 
+
+		Sink sink_end; 
 		Sink sink;
-		#ifdef ALT
-			PoissonSource2 altsource; 
-		#endif
 };
 
 void MM1K :: Setup()
 {	
 	connect source.out,queue_module.in;
-	//connect source[1].out, queue_module.in;
-	#ifdef ALT
-	connect altsource.out, queue_module.in;
-	#endif
+	connect onof.out, queue_module.in; 
+
 	connect queue_module.out,sink.in;
-	
+
+
+	connect queue_module.out, queue_back.in; //instead of passing from sink, we straight connect queue_ to queue_back in opposite direction  
+	connect queue_back.out, sink_end.in; 
+
 	source.L = 1000; // bits
 	source.bandwidth = 40E3; // bps
-	
-	#ifdef ALT
-		
-		altsource.L = 1000; //bits
-		altsource.bandwidth = 40E3; 
-	#endif
 };
 
 void MM1K:: Start()

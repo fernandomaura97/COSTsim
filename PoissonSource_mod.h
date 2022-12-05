@@ -6,7 +6,12 @@
 
 #include "packet.h"
 
-component PoissonSource : public TypeII
+
+double on_period = 0.1;
+double off_period = 0.9;
+int on_off_sources = 1;
+
+component PoissonSource_m : public TypeII
 {
 	public:
 		// Connections
@@ -19,7 +24,7 @@ component PoissonSource : public TypeII
 		inport inline void new_packet(trigger_t& t); // action that takes place when timer expires
 		inport inline void on_off(trigger_t& t);
 
-		PoissonSource () { connect inter_packet_timer.to_component,new_packet;
+		PoissonSource_m () { connect inter_packet_timer.to_component,new_packet;
 												connect on_off_period.to_component, on_off;};
 
 	public:
@@ -41,17 +46,17 @@ component PoissonSource : public TypeII
 		//void new_packet(trigger_t &t);
 };
 
-void PoissonSource :: Setup()
+void PoissonSource_m :: Setup()
 {
-	//printf("hello setup\n");
-
+	printf("hello setup\n");
+	
 };
 
-void PoissonSource :: Start()
+void PoissonSource_m :: Start()
 {
 	Setup();
 	//printf("hola \n" );
-	//bandwidth = 2000000000;
+	bandwidth = 2e9;
 	L = 12000;
 	fullBuffer = 0;
 	on = 1;
@@ -72,13 +77,13 @@ void PoissonSource :: Start()
 	}
 };
 
-void PoissonSource :: Stop()
+void PoissonSource_m :: Stop()
 {
 	printf("Sent packets from generator = %f\n",sent_packets);
 
 };
 
-void PoissonSource :: new_packet(trigger_t &)
+void PoissonSource_m :: new_packet(trigger_t &)
 {
 for(int i=0;i<=0;i++){
 	MPDU_packet packet;
@@ -111,7 +116,7 @@ for(int i=0;i<=0;i++){
 
 };
 
-void PoissonSource :: on_off(trigger_t &){
+void PoissonSource_m :: on_off(trigger_t &){
 	if(on == 1){
 		on = 0;
 		inter_packet_timer.Cancel();
