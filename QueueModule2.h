@@ -55,10 +55,11 @@ void QueueModule2 :: Start()
 
 void QueueModule2 :: Stop()
 {
-	// --
-	printf("WAY BACK:\n");
-	printf("\t Blocking Probability = %f\n",blocked_packets/arrived_packets);
-	printf("\t E[Queue Length] = %f\n",queue_length/arrived_packets);
+	#ifdef DBG_QUEUE2
+		printf("WAY IN:\n");
+		printf("\ttest Blocking Probability = %f\n",blocked_packets/arrived_packets);
+		printf("\ttest E[Queue Length] = %f\n",queue_length/arrived_packets);
+	#endif
 };
 
 void QueueModule2 :: in(MPDU_packet &packet)

@@ -15,6 +15,11 @@
 #include "Sink.h"
 
 
+//comment defined vars to disable Debug
+#define DBG_QUEUE1 1
+#define DBG_QUEUE2 1
+#define DBG_SINK 1
+
 //using namespace cost;
 
 component MM1K : public CostSimEng
@@ -31,7 +36,7 @@ component MM1K : public CostSimEng
 		QueueModule queue_module;
 		QueueModule2 queue_back; 
 
-		Sink sink_end; 
+		Sink sink2; 
 		Sink sink;
 };
 
@@ -39,19 +44,18 @@ void MM1K :: Setup()
 {	
 
 	
-
 	connect source.out,queue_module.in;
 	connect onof.out, queue_module.in; 
 
 	connect queue_module.out,sink.in;
 	connect queue_module.out, queue_back.in; //instead of passing from sink, we straight connect queue_ to queue_back in opposite direction  
-	connect queue_back.out, sink_end.in; 
+	connect queue_back.out, sink2.in; 
 
 	source.L = 1000; // bits
 	source.bandwidth = 40E3; // bps
 
-	sink.is_lastsink = false; 
-	sink_end.is_lastsink = true; 
+	sink.id = 1; 
+	sink2.id = 2; 
 
 };
 

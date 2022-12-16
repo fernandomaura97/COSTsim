@@ -23,7 +23,7 @@ component Sink : public TypeII
 		double system_time;
 		double received_packets;
 		double av_L; // average packet length
-		bool is_lastsink;
+		int id;
 
 };
 
@@ -40,17 +40,20 @@ void Sink :: Start()
 };
 
 void Sink :: Stop()
-{
-	if (is_lastsink == false){
-		printf("STATS 1st SINK :\n");
-		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
-		printf("\tReceived traffic = %f\n",av_L/SimTime());
-		}
-	else{
-		printf("STATS last SINK:\n");
-		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
-		printf("\tReceived traffic = %f\n",av_L/SimTime());
-		}
+{	
+	switch(id){
+
+		case 1: 
+			printf("[STATS 1st SINK :]\n");
+			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+			printf("\tReceived traffic = %f\n",av_L/SimTime());
+		case 2: 
+			printf("STATS last SINK:\n");
+			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+			printf("\tReceived traffic = %f\n",av_L/SimTime());
+		default: printf("ID SINK ERR!\n");
+
+	}
 };
 
 void Sink :: in(MPDU_packet &packet)
@@ -58,8 +61,9 @@ void Sink :: in(MPDU_packet &packet)
 	system_time += SimTime() - packet.send_time;
 	av_L += packet.L;
 	received_packets++;
-
+	#ifdef DBG_SINK
 	printf("rx packets: %f, paket l: %d, av_l = %f\n", received_packets, packet.L, av_L);
+	#endif
 };
 
 #endif

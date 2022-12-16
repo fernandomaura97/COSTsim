@@ -1355,8 +1355,6 @@ int on_off_sources = 1;
 
 
 
-
-
 #line 1 "packet.h"
 #ifndef _MPDU_PACKET_
 #define _MPDU_PACKET_
@@ -1372,7 +1370,7 @@ struct MPDU_packet
 #endif 
 
 
-#line 6 "QueueModule.h"
+#line 4 "QueueModule.h"
 
 
 #line 1 "FIFO.h"
@@ -1443,30 +1441,30 @@ struct MPDU_packet
 
 #endif
 
-#line 7 "QueueModule.h"
+#line 5 "QueueModule.h"
 
 
 #define Q 10
 #define C 100E3
 
 
-#line 45 "QueueModule.h"
+#line 43 "QueueModule.h"
 ;
 
 
-#line 53 "QueueModule.h"
+#line 51 "QueueModule.h"
 ;
 
 
-#line 62 "QueueModule.h"
+#line 63 "QueueModule.h"
 ;
 
 
-#line 80 "QueueModule.h"
+#line 81 "QueueModule.h"
 ;
 
 
-#line 94 "QueueModule.h"
+#line 95 "QueueModule.h"
 ;
 
 
@@ -1584,15 +1582,15 @@ struct MPDU_packet
 ;
 
 
-#line 62 "QueueModule2.h"
+#line 63 "QueueModule2.h"
 ;
 
 
-#line 80 "QueueModule2.h"
+#line 81 "QueueModule2.h"
 ;
 
 
-#line 94 "QueueModule2.h"
+#line 95 "QueueModule2.h"
 ;
 
 
@@ -1637,11 +1635,11 @@ struct MPDU_packet
 ;
 
 
-#line 54 "Sink.h"
+#line 57 "Sink.h"
 ;
 
 
-#line 63 "Sink.h"
+#line 67 "Sink.h"
 ;
 
 #endif
@@ -1651,9 +1649,14 @@ struct MPDU_packet
 
 
 
+#define DBG_QUEUE1 1
+#define DBG_QUEUE2 1
+#define DBG_SINK 1
 
 
-#line 56 "MM1K.cc"
+
+
+#line 60 "MM1K.cc"
 ;
 
 #include "compcxx_MM1K.h"
@@ -1855,7 +1858,7 @@ class compcxx_Timer_5 : public compcxx_component, public TimerBase
 public:compcxx_QueueModule_11* p_compcxx_parent;};
 
 class compcxx_Sink_14;class compcxx_QueueModule2_12;
-#line 12 "QueueModule.h"
+#line 10 "QueueModule.h"
 class compcxx_QueueModule_11 : public compcxx_component, public TypeII
 {
 	public:
@@ -1904,7 +1907,7 @@ class compcxx_Sink_14 : public compcxx_component, public TypeII
 		double system_time;
 		double received_packets;
 		double av_L; 
-		bool is_lastsink;
+		int id;
 
 };
 
@@ -1926,7 +1929,7 @@ class compcxx_Sink_13 : public compcxx_component, public TypeII
 		double system_time;
 		double received_packets;
 		double av_L; 
-		bool is_lastsink;
+		int id;
 
 };
 
@@ -1983,7 +1986,7 @@ class compcxx_PoissonSource_9 : public compcxx_component, public TypeII
 public:compcxx_QueueModule_11* p_compcxx_QueueModule_11;};
 
 
-#line 20 "MM1K.cc"
+#line 25 "MM1K.cc"
 class compcxx_MM1K_15 : public compcxx_component, public CostSimEng
 {
 	public:
@@ -1998,7 +2001,7 @@ class compcxx_MM1K_15 : public compcxx_component, public CostSimEng
 		compcxx_QueueModule_11 queue_module;
 		compcxx_QueueModule2_12 queue_back; 
 
-		compcxx_Sink_13 sink_end; 
+		compcxx_Sink_13 sink2; 
 		compcxx_Sink_14 sink;
 };
 
@@ -2322,12 +2325,13 @@ void compcxx_QueueModule2_12 :: Start()
 #line 56 "QueueModule2.h"
 void compcxx_QueueModule2_12 :: Stop()
 {
-	
-	printf("WAY BACK:\n");
-	printf("\t Blocking Probability = %f\n",blocked_packets/arrived_packets);
-	printf("\t E[Queue Length] = %f\n",queue_length/arrived_packets);
+	#ifdef DBG_QUEUE2
+		printf("WAY IN:\n");
+		printf("\ttest Blocking Probability = %f\n",blocked_packets/arrived_packets);
+		printf("\ttest E[Queue Length] = %f\n",queue_length/arrived_packets);
+	#endif
 }
-#line 64 "QueueModule2.h"
+#line 65 "QueueModule2.h"
 void compcxx_QueueModule2_12 :: in(MPDU_packet &packet)
 {
 	arrived_packets++;
@@ -2345,7 +2349,7 @@ void compcxx_QueueModule2_12 :: in(MPDU_packet &packet)
 
 
 }
-#line 82 "QueueModule2.h"
+#line 83 "QueueModule2.h"
 void compcxx_QueueModule2_12 :: endService(trigger_t &)
 {
 	MPDU_packet packet = queue.GetFirstPacket();
@@ -2456,14 +2460,14 @@ void compcxx_FIFO_6 :: DeletePacketIn(int i)
 
 
 
-#line 21 "QueueModule.h"
+#line 19 "QueueModule.h"
 
-#line 42 "QueueModule.h"
+#line 40 "QueueModule.h"
 void compcxx_QueueModule_11 :: Setup()
 {
 
 }
-#line 47 "QueueModule.h"
+#line 45 "QueueModule.h"
 void compcxx_QueueModule_11 :: Start()
 {
 	
@@ -2471,16 +2475,19 @@ void compcxx_QueueModule_11 :: Start()
 	arrived_packets = 0;
 	queue_length = 0;
 }
-#line 55 "QueueModule.h"
+#line 53 "QueueModule.h"
 void compcxx_QueueModule_11 :: Stop()
 {
 	
+
+	#ifdef DBG_QUEUE1
 	printf("WAY IN:\n");
 	printf("\ttest Blocking Probability = %f\n",blocked_packets/arrived_packets);
 	printf("\ttest E[Queue Length] = %f\n",queue_length/arrived_packets);
-	
+	#endif
+
 }
-#line 64 "QueueModule.h"
+#line 65 "QueueModule.h"
 void compcxx_QueueModule_11 :: in(MPDU_packet &packet)
 {
 	arrived_packets++;
@@ -2498,7 +2505,7 @@ void compcxx_QueueModule_11 :: in(MPDU_packet &packet)
 
 
 }
-#line 82 "QueueModule.h"
+#line 83 "QueueModule.h"
 void compcxx_QueueModule_11 :: endService(trigger_t &)
 {
 	MPDU_packet packet = queue.GetFirstPacket();
@@ -2526,26 +2533,30 @@ void compcxx_Sink_14 :: Start()
 }
 #line 42 "Sink.h"
 void compcxx_Sink_14 :: Stop()
-{
-	if (is_lastsink == false){
-		printf("STATS 1st SINK :\n");
-		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
-		printf("\tReceived traffic = %f\n",av_L/SimTime());
-		}
-	else{
-		printf("STATS last SINK:\n");
-		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
-		printf("\tReceived traffic = %f\n",av_L/SimTime());
-		}
+{	
+	switch(id){
+
+		case 1: 
+			printf("[STATS 1st SINK :]\n");
+			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+			printf("\tReceived traffic = %f\n",av_L/SimTime());
+		case 2: 
+			printf("STATS last SINK:\n");
+			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+			printf("\tReceived traffic = %f\n",av_L/SimTime());
+		default: printf("ID SINK ERR!\n");
+
+	}
 }
-#line 56 "Sink.h"
+#line 59 "Sink.h"
 void compcxx_Sink_14 :: in(MPDU_packet &packet)
 {
 	system_time += SimTime() - packet.send_time;
 	av_L += packet.L;
 	received_packets++;
-
+	#ifdef DBG_SINK
 	printf("rx packets: %f, paket l: %d, av_l = %f\n", received_packets, packet.L, av_L);
+	#endif
 }
 #line 30 "Sink.h"
 void compcxx_Sink_13 :: Setup()
@@ -2561,26 +2572,30 @@ void compcxx_Sink_13 :: Start()
 }
 #line 42 "Sink.h"
 void compcxx_Sink_13 :: Stop()
-{
-	if (is_lastsink == false){
-		printf("STATS 1st SINK :\n");
-		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
-		printf("\tReceived traffic = %f\n",av_L/SimTime());
-		}
-	else{
-		printf("STATS last SINK:\n");
-		printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
-		printf("\tReceived traffic = %f\n",av_L/SimTime());
-		}
+{	
+	switch(id){
+
+		case 1: 
+			printf("[STATS 1st SINK :]\n");
+			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+			printf("\tReceived traffic = %f\n",av_L/SimTime());
+		case 2: 
+			printf("STATS last SINK:\n");
+			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
+			printf("\tReceived traffic = %f\n",av_L/SimTime());
+		default: printf("ID SINK ERR!\n");
+
+	}
 }
-#line 56 "Sink.h"
+#line 59 "Sink.h"
 void compcxx_Sink_13 :: in(MPDU_packet &packet)
 {
 	system_time += SimTime() - packet.send_time;
 	av_L += packet.L;
 	received_packets++;
-
+	#ifdef DBG_SINK
 	printf("rx packets: %f, paket l: %d, av_l = %f\n", received_packets, packet.L, av_L);
+	#endif
 }
 #line 288 "./COST/cost.h"
 
@@ -2672,34 +2687,33 @@ void compcxx_PoissonSource_9 :: new_packet(trigger_t &)
 	inter_packet_timer.Set(SimTime()+Exponential(1/arrival_rate));	
 
 }
-#line 38 "MM1K.cc"
+#line 43 "MM1K.cc"
 void compcxx_MM1K_15 :: Setup()
 {	
 
 	
-
 	source.p_compcxx_QueueModule_11=&queue_module /*connect source.out,queue_module.in*/;
 	onof.p_compcxx_QueueModule_11=&queue_module /*connect onof.out, queue_module.in*/; 
 
 	queue_module.p_compcxx_Sink_14=&sink /*connect queue_module.out,sink.in*/;
 	queue_module.p_compcxx_QueueModule2_12=&queue_back /*connect queue_module.out, queue_back.in*/; 
-	queue_back.p_compcxx_Sink_13=&sink_end /*connect queue_back.out, sink_end.in*/; 
+	queue_back.p_compcxx_Sink_13=&sink2 /*connect queue_back.out, sink2.in*/; 
 
 	source.L = 1000; 
 	source.bandwidth = 40E3; 
 
-	sink.is_lastsink = false; 
-	sink_end.is_lastsink = true; 
+	sink.id = 1; 
+	sink2.id = 2; 
 
 }
-#line 58 "MM1K.cc"
+#line 62 "MM1K.cc"
 void compcxx_MM1K_15:: Start()
 {
 	
 }
 
 
-#line 63 "MM1K.cc"
+#line 67 "MM1K.cc"
 void compcxx_MM1K_15:: Stop()
 {
 
@@ -2708,7 +2722,7 @@ void compcxx_MM1K_15:: Stop()
 
 
 
-#line 70 "MM1K.cc"
+#line 74 "MM1K.cc"
 int main(int argc, char *argv[])
 {
 

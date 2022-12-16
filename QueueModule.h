@@ -1,8 +1,6 @@
 /*
 	Queue Module
 */
-
-
 #include "packet.h"
 #include "FIFO.h"
 
@@ -55,10 +53,13 @@ void QueueModule :: Start()
 void QueueModule :: Stop()
 {
 	// --
+
+	#ifdef DBG_QUEUE1
 	printf("WAY IN:\n");
 	printf("\ttest Blocking Probability = %f\n",blocked_packets/arrived_packets);
 	printf("\ttest E[Queue Length] = %f\n",queue_length/arrived_packets);
-	
+	#endif
+
 };
 
 void QueueModule :: in(MPDU_packet &packet)
