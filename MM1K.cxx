@@ -1604,8 +1604,8 @@ struct MPDU_packet
 
 
 
-#ifndef _SINK_
-#define _SINK_
+#ifndef _SINK_H
+#define _SINK_H
 
 
 #line 1 "packet.h"
@@ -1635,11 +1635,11 @@ struct MPDU_packet
 ;
 
 
-#line 57 "Sink.h"
+#line 59 "Sink.h"
 ;
 
 
-#line 67 "Sink.h"
+#line 69 "Sink.h"
 ;
 
 #endif
@@ -2540,15 +2540,17 @@ void compcxx_Sink_14 :: Stop()
 			printf("[STATS 1st SINK :]\n");
 			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
 			printf("\tReceived traffic = %f\n",av_L/SimTime());
+			break;
 		case 2: 
 			printf("STATS last SINK:\n");
 			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
 			printf("\tReceived traffic = %f\n",av_L/SimTime());
+			break;
 		default: printf("ID SINK ERR!\n");
 
 	}
 }
-#line 59 "Sink.h"
+#line 61 "Sink.h"
 void compcxx_Sink_14 :: in(MPDU_packet &packet)
 {
 	system_time += SimTime() - packet.send_time;
@@ -2579,15 +2581,17 @@ void compcxx_Sink_13 :: Stop()
 			printf("[STATS 1st SINK :]\n");
 			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
 			printf("\tReceived traffic = %f\n",av_L/SimTime());
+			break;
 		case 2: 
 			printf("STATS last SINK:\n");
 			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
 			printf("\tReceived traffic = %f\n",av_L/SimTime());
+			break;
 		default: printf("ID SINK ERR!\n");
 
 	}
 }
-#line 59 "Sink.h"
+#line 61 "Sink.h"
 void compcxx_Sink_13 :: in(MPDU_packet &packet)
 {
 	system_time += SimTime() - packet.send_time;

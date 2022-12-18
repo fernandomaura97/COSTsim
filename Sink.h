@@ -2,8 +2,8 @@
 	Sinks. Collect de traffic generate by the mobile nodes.
 */
 
-#ifndef _SINK_
-#define _SINK_
+#ifndef _SINK_H
+#define _SINK_H
 
 #include "packet.h"
 
@@ -47,10 +47,12 @@ void Sink :: Stop()
 			printf("[STATS 1st SINK :]\n");
 			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
 			printf("\tReceived traffic = %f\n",av_L/SimTime());
+			break;
 		case 2: 
 			printf("STATS last SINK:\n");
 			printf("\ttest Average System Time (Queueing + Transmission) = %f\n",system_time/received_packets);
 			printf("\tReceived traffic = %f\n",av_L/SimTime());
+			break;
 		default: printf("ID SINK ERR!\n");
 
 	}
