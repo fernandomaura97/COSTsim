@@ -7,8 +7,7 @@
 #include "FIFO2.h"
  
 
-#define Q 10
-#define C 100E3
+//#define Q X #define C X
 
 component QueueModule2 : public TypeII
 {
@@ -56,7 +55,7 @@ void QueueModule2 :: Start()
 void QueueModule2 :: Stop()
 {
 	#ifdef DBG_QUEUE2
-		printf("WAY IN:\n");
+		printf("WAY OUT:\n");
 		printf("\ttest Blocking Probability = %f\n",blocked_packets/arrived_packets);
 		printf("\ttest E[Queue Length] = %f\n",queue_length/arrived_packets);
 	#endif

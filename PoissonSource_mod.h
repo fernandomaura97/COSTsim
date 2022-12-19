@@ -7,8 +7,8 @@
 #include "packet.h"
 
 
-double on_period = 0.5;
-double off_period = 0.5;
+double on_period = 0.9;
+double off_period = 0.1;
 int on_off_sources = 1;
 
 component PoissonSource_m : public TypeII
@@ -56,8 +56,7 @@ void PoissonSource_m :: Start()
 {
 	Setup();
 	//printf("hola \n" );
-	bandwidth = 2e3;
-	L = 45e3;
+	
 	fullBuffer = 0;
 	on = 1;
 	arrival_rate=bandwidth/L;
@@ -72,8 +71,7 @@ void PoissonSource_m :: Start()
 	if(fullBuffer == 1){
 		inter_packet_timer.Set(SimTime());
 	}else{
-	inter_packet_timer.Set(Exponential(1/arrival_rate));
-
+		inter_packet_timer.Set(Exponential(1/arrival_rate));
 	}
 };
 
@@ -103,6 +101,7 @@ for(int i=0;i<=0;i++){
 	*/
 	//printf("%f: SOURCE %d creates packet: %d \n",SimTime(),id, packet.id);
 	out(packet);
+	sent_packets++;
 	packet_id++;
 
 	counter++;
@@ -113,7 +112,7 @@ for(int i=0;i<=0;i++){
 	}else{
 		inter_packet_timer.Set((SimTime()+Exponential(1/arrival_rate)));
 	}
-	sent_packets++;
+	
 	//printf("print timer: %f\n",inter_packet_timer.GetTime());
 
 };

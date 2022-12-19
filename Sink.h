@@ -64,7 +64,7 @@ void Sink :: in(MPDU_packet &packet)
 	av_L += packet.L;
 	received_packets++;
 	#ifdef DBG_SINK
-	printf("rx packets: %f, paket l: %d, av_l = %f\n", received_packets, packet.L, av_L);
+	printf("rx packets: %f, packet l: %d, av_l = %f\n", received_packets, packet.L, av_L/received_packets);
 	#endif
 };
 

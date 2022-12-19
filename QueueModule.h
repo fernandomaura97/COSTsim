@@ -4,8 +4,8 @@
 #include "packet.h"
 #include "FIFO.h"
 
-#define Q 10
-#define C 100E3
+#define Q 30
+#define C 100E3 //bps
 
 component QueueModule : public TypeII
 {

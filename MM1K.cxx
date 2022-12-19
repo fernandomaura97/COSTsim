@@ -1323,8 +1323,8 @@ struct MPDU_packet
 
 
 
-double on_period = 0.5;
-double off_period = 0.5;
+double on_period = 0.9;
+double off_period = 0.1;
 int on_off_sources = 1;
 
 
@@ -1332,19 +1332,19 @@ int on_off_sources = 1;
 ;
 
 
-#line 78 "PoissonSource_mod.h"
+#line 76 "PoissonSource_mod.h"
 ;
 
 
-#line 84 "PoissonSource_mod.h"
+#line 82 "PoissonSource_mod.h"
 ;
 
 
-#line 119 "PoissonSource_mod.h"
+#line 118 "PoissonSource_mod.h"
 ;
 
 
-#line 133 "PoissonSource_mod.h"
+#line 132 "PoissonSource_mod.h"
 ;
 
 #line 12 "MM1K.cc"
@@ -1444,7 +1444,7 @@ struct MPDU_packet
 #line 5 "QueueModule.h"
 
 
-#define Q 10
+#define Q 30
 #define C 100E3
 
 
@@ -1570,27 +1570,26 @@ struct MPDU_packet
 
  
 
-#define Q 10
-#define C 100E3
 
 
-#line 46 "QueueModule2.h"
+
+#line 45 "QueueModule2.h"
 ;
 
 
-#line 54 "QueueModule2.h"
+#line 53 "QueueModule2.h"
 ;
 
 
-#line 63 "QueueModule2.h"
+#line 62 "QueueModule2.h"
 ;
 
 
-#line 81 "QueueModule2.h"
+#line 80 "QueueModule2.h"
 ;
 
 
-#line 95 "QueueModule2.h"
+#line 94 "QueueModule2.h"
 ;
 
 
@@ -1656,7 +1655,7 @@ struct MPDU_packet
 
 
 
-#line 60 "MM1K.cc"
+#line 65 "MM1K.cc"
 ;
 
 #include "compcxx_MM1K.h"
@@ -1785,7 +1784,7 @@ class compcxx_Timer_7 : public compcxx_component, public TimerBase
 public:compcxx_QueueModule2_12* p_compcxx_parent;};
 
 class compcxx_Sink_13;
-#line 13 "QueueModule2.h"
+#line 12 "QueueModule2.h"
 class compcxx_QueueModule2_12 : public compcxx_component, public TypeII
 {
 	public:
@@ -2135,8 +2134,7 @@ void compcxx_PoissonSource_m_10 :: Start()
 {
 	Setup();
 	
-	bandwidth = 2e3;
-	L = 45e3;
+	
 	fullBuffer = 0;
 	on = 1;
 	arrival_rate=bandwidth/L;
@@ -2151,17 +2149,16 @@ void compcxx_PoissonSource_m_10 :: Start()
 	if(fullBuffer == 1){
 		inter_packet_timer.Set(SimTime());
 	}else{
-	inter_packet_timer.Set(Exponential(1/arrival_rate));
-
+		inter_packet_timer.Set(Exponential(1/arrival_rate));
 	}
 }
-#line 80 "PoissonSource_mod.h"
+#line 78 "PoissonSource_mod.h"
 void compcxx_PoissonSource_m_10 :: Stop()
 {
 	printf("Sent packets from generator = %f\n",sent_packets);
 
 }
-#line 86 "PoissonSource_mod.h"
+#line 84 "PoissonSource_mod.h"
 void compcxx_PoissonSource_m_10 :: new_packet(trigger_t &)
 {
 for(int i=0;i<=0;i++){
@@ -2182,6 +2179,7 @@ for(int i=0;i<=0;i++){
 
 	
 	(p_compcxx_QueueModule_11->in(packet));
+	sent_packets++;
 	packet_id++;
 
 	counter++;
@@ -2192,11 +2190,11 @@ for(int i=0;i<=0;i++){
 	}else{
 		inter_packet_timer.Set((SimTime()+Exponential(1/arrival_rate)));
 	}
-	sent_packets++;
+	
 	
 
 }
-#line 121 "PoissonSource_mod.h"
+#line 120 "PoissonSource_mod.h"
 void compcxx_PoissonSource_m_10 :: on_off(trigger_t &){
 	if(on == 1){
 		on = 0;
@@ -2307,14 +2305,14 @@ void compcxx_FIFO_8 :: DeletePacketIn(int i)
 
 
 
-#line 22 "QueueModule2.h"
+#line 21 "QueueModule2.h"
 
-#line 43 "QueueModule2.h"
+#line 42 "QueueModule2.h"
 void compcxx_QueueModule2_12 :: Setup()
 {
 
 }
-#line 48 "QueueModule2.h"
+#line 47 "QueueModule2.h"
 void compcxx_QueueModule2_12 :: Start()
 {
 	
@@ -2322,16 +2320,16 @@ void compcxx_QueueModule2_12 :: Start()
 	arrived_packets = 0;
 	queue_length = 0;
 }
-#line 56 "QueueModule2.h"
+#line 55 "QueueModule2.h"
 void compcxx_QueueModule2_12 :: Stop()
 {
 	#ifdef DBG_QUEUE2
-		printf("WAY IN:\n");
+		printf("WAY OUT:\n");
 		printf("\ttest Blocking Probability = %f\n",blocked_packets/arrived_packets);
 		printf("\ttest E[Queue Length] = %f\n",queue_length/arrived_packets);
 	#endif
 }
-#line 65 "QueueModule2.h"
+#line 64 "QueueModule2.h"
 void compcxx_QueueModule2_12 :: in(MPDU_packet &packet)
 {
 	arrived_packets++;
@@ -2349,7 +2347,7 @@ void compcxx_QueueModule2_12 :: in(MPDU_packet &packet)
 
 
 }
-#line 83 "QueueModule2.h"
+#line 82 "QueueModule2.h"
 void compcxx_QueueModule2_12 :: endService(trigger_t &)
 {
 	MPDU_packet packet = queue.GetFirstPacket();
@@ -2557,7 +2555,7 @@ void compcxx_Sink_14 :: in(MPDU_packet &packet)
 	av_L += packet.L;
 	received_packets++;
 	#ifdef DBG_SINK
-	printf("rx packets: %f, paket l: %d, av_l = %f\n", received_packets, packet.L, av_L);
+	printf("rx packets: %f, packet l: %d, av_l = %f\n", received_packets, packet.L, av_L/received_packets);
 	#endif
 }
 #line 30 "Sink.h"
@@ -2598,7 +2596,7 @@ void compcxx_Sink_13 :: in(MPDU_packet &packet)
 	av_L += packet.L;
 	received_packets++;
 	#ifdef DBG_SINK
-	printf("rx packets: %f, paket l: %d, av_l = %f\n", received_packets, packet.L, av_L);
+	printf("rx packets: %f, packet l: %d, av_l = %f\n", received_packets, packet.L, av_L/received_packets);
 	#endif
 }
 #line 288 "./COST/cost.h"
@@ -2703,21 +2701,26 @@ void compcxx_MM1K_15 :: Setup()
 	queue_module.p_compcxx_QueueModule2_12=&queue_back /*connect queue_module.out, queue_back.in*/; 
 	queue_back.p_compcxx_Sink_13=&sink2 /*connect queue_back.out, sink2.in*/; 
 
-	source.L = 1000; 
-	source.bandwidth = 40E3; 
+	
+	source.bandwidth = 411E3; 
+	source.L = 5000; 
+
+	
+	onof.bandwidth = 80E3;
+	onof.L = 5000;
 
 	sink.id = 1; 
 	sink2.id = 2; 
 
 }
-#line 62 "MM1K.cc"
+#line 67 "MM1K.cc"
 void compcxx_MM1K_15:: Start()
 {
 	
 }
 
 
-#line 67 "MM1K.cc"
+#line 72 "MM1K.cc"
 void compcxx_MM1K_15:: Stop()
 {
 
@@ -2726,7 +2729,7 @@ void compcxx_MM1K_15:: Stop()
 
 
 
-#line 74 "MM1K.cc"
+#line 79 "MM1K.cc"
 int main(int argc, char *argv[])
 {
 

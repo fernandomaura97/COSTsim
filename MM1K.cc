@@ -51,8 +51,13 @@ void MM1K :: Setup()
 	connect queue_module.out, queue_back.in; //instead of passing from sink, we straight connect queue_ to queue_back in opposite direction  
 	connect queue_back.out, sink2.in; 
 
-	source.L = 1000; // bits
-	source.bandwidth = 40E3; // bps
+	
+	source.bandwidth = 411E3; // bps
+	source.L = 5000; // bits
+
+	//onoff settings
+	onof.bandwidth = 80E3;
+	onof.L = 5000;
 
 	sink.id = 1; 
 	sink2.id = 2; 
