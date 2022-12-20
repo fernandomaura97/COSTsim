@@ -59,7 +59,7 @@ void PoissonSource_m :: Start()
 	
 	fullBuffer = 0;
 	on = 1;
-	arrival_rate=bandwidth/L;
+	arrival_rate=bandwidth/L; //TODO: Ajustar per periode ONOFF
 	sent_packets = 0;
 	packet_id = 0;
 	counter = 0;
@@ -83,38 +83,38 @@ void PoissonSource_m :: Stop()
 
 void PoissonSource_m :: new_packet(trigger_t &)
 {
-for(int i=0;i<=0;i++){
-	MPDU_packet packet;
+	for(int i=0;i<=0;i++)
+	{
+		MPDU_packet packet;
 
-	packet.L=L;
-	packet.send_time = SimTime();
-	/*
-	packet.tx_attempts = 0;
-	packet.id = packet_id;
-	packet.transmitting = 0;
-	packet.tx_time = -1;
-	packet.tx_time_final = -1;
-	packet.assignedInterface = -1;
-	packet.interruptions = 0;
-	packet.assignedBO = -1;
-	packet.time_of_backoff_assignment = -1;
-	*/
-	//printf("%f: SOURCE %d creates packet: %d \n",SimTime(),id, packet.id);
-	out(packet);
-	sent_packets++;
-	packet_id++;
+		packet.L=L;
+		packet.send_time = SimTime();
+		/*
+		packet.tx_attempts = 0;
+		packet.id = packet_id;
+		packet.transmitting = 0;
+		packet.tx_time = -1;
+		packet.tx_time_final = -1;
+		packet.assignedInterface = -1;
+		packet.interruptions = 0;
+		packet.assignedBO = -1;
+		packet.time_of_backoff_assignment = -1;
+		*/
+		//printf("%f: SOURCE %d creates packet: %d \n",SimTime(),id, packet.id);
+		out(packet);
+		sent_packets++;
+		packet_id++;
 
-	counter++;
-}
-	//inter_packet_timer.Set(SimTime()+Exponential(1/arrival_rate));
+		counter++;
+		//inter_packet_timer.Set(SimTime()+Exponential(1/arrival_rate));
+	}
+
 	if(fullBuffer == 1 && counter == 1){
 		inter_packet_timer.Set((SimTime()));
-	}else{
+	}
+	else{
 		inter_packet_timer.Set((SimTime()+Exponential(1/arrival_rate)));
 	}
-	
-	//printf("print timer: %f\n",inter_packet_timer.GetTime());
-
 };
 
 void PoissonSource_m :: on_off(trigger_t &){
