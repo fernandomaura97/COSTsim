@@ -6,6 +6,7 @@
 #define _SINK_H
 
 #include "packet.h"
+#include <vector>
 
 component Sink : public TypeII
 {
@@ -17,19 +18,18 @@ component Sink : public TypeII
 		void Setup();
 		void Start();
 		void Stop();
-		
-
 	public:
 		double system_time;
 		double received_packets;
 		double av_L; // average packet length
 		int id;
-
+		std::vector <double> v_delays;
 };
+
 
 void Sink :: Setup()
 {
-
+	
 };
 
 void Sink :: Start()
@@ -54,7 +54,6 @@ void Sink :: Stop()
 			printf("\tReceived traffic = %f\n",av_L/SimTime());
 			break;
 		default: printf("ID SINK ERR!\n");
-
 	}
 };
 
@@ -62,10 +61,15 @@ void Sink :: in(MPDU_packet &packet)
 {
 	system_time += SimTime() - packet.send_time;
 	av_L += packet.L;
-	received_packets++;
+	if (id ==1){
+		received_packets++;
+	}
+	
 	#ifdef DBG_SINK
-	printf("rx packets: %f, packet l: %d, av_l = %f\n", received_packets, packet.L, av_L/received_packets);
+	printf("rx packets: %f, packet l: %d, av_l = %f\t", received_packets, packet.L, av_L/received_packets);
 	#endif
+	v_delays.push_back(packet.q_elapsed);
+	printf("elapsed in queue: %f\n", packet.q_elapsed);
 };
 
 #endif

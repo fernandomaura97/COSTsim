@@ -52,11 +52,11 @@ void MM1K :: Setup()
 	connect queue_back.out, sink2.in; 
 
 	
-	source.bandwidth = 411E3; // bps
+	source.bandwidth = 40E3; // bps
 	source.L = 5000; // bits
 
 	//onoff settings
-	onof.bandwidth = 80E3;
+	onof.bandwidth = 40E3;
 	onof.L = 5000;
 
 	sink.id = 1; 

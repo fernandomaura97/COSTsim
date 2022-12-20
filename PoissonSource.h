@@ -22,8 +22,6 @@ component PoissonSource : public TypeII
 		double bandwidth; // Source Bandwidth
 		double arrival_rate;
 		double L;
-
-	
 	public:
 		void Setup();
 		void Start();

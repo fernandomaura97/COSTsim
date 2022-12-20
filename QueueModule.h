@@ -69,7 +69,7 @@ void QueueModule :: in(MPDU_packet &packet)
 	if(queue.QueueSize() < Q)
 	{
 		queue.PutPacket(packet);
-		packet.q_time = Simtime();
+		packet.q_time = SimTime();
 		if(queue.QueueSize() == 1)
 		{
 			service_time.Set(SimTime()+(packet.L/C));
