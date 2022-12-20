@@ -54,6 +54,8 @@ void Sink :: Stop()
 			printf("\tReceived traffic = %f\n",av_L/SimTime());
 			break;
 		default: printf("ID SINK ERR!\n");
+
+		
 	}
 };
 
