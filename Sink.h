@@ -5,6 +5,10 @@
 #ifndef _SINK_H
 #define _SINK_H
 
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <numeric>
 #include "packet.h"
 #include <vector>
 
@@ -54,9 +58,19 @@ void Sink :: Stop()
 			printf("\tReceived traffic = %f\n",av_L/SimTime());
 			break;
 		default: printf("ID SINK ERR!\n");
-
-		
 	}
+
+
+	std::cout<< "vector of size "<< v_delays.size()<<"\n";
+
+	std::ofstream fout("vector.txt");
+	fout.precision(10);
+
+	std::copy(v_delays.begin(),v_delays.end(), std::ostream_iterator<double>(fout, "\n")); //copy whole vector into file
+
+	#ifdef DBG_SINK
+	for (double i:v_delays)	std::cout << "D=" << i <<"\n"; //print everything in vector
+	#endif
 };
 
 void Sink :: in(MPDU_packet &packet)
